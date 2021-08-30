@@ -1,6 +1,5 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import axios from 'axios';
 
 const MAX_LINE = 999;
 
@@ -20,17 +19,23 @@ export function activate(context: vscode.ExtensionContext) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('fig.explain', () => {
+	let disposable = vscode.commands.registerCommand('fig.explain', async () => {
 		// The code you place here will be executed every time your command is executed
 		// Display a message box to the user
 		const editor = vscode.window.activeTextEditor;
 		if (editor?.selection) {
 			const highlightRange = new vscode.Range(editor.selection.start, editor.selection.end);
 			const highlight = editor.document.getText(highlightRange);
-			figlog(highlight);
+
+			const explainResponse = await axios.post('http://localhost:5000/function/v1/explain', {
+				code: highlight,
+				accessToken: 'sTRGO9Mb8UNrKIshDRivdABokvDordlp',
+			});
+			const explain = explainResponse.data.output;
+			const commentedExplain = explain.split('\n').map((line: string) => `// ${line}`).join('\n');
 
 			const insertPosition = new vscode.Position(editor.selection.start.line - 1, editor.selection.start.character + MAX_LINE);
-			const snippet = new vscode.SnippetString('\nHey there');
+			const snippet = new vscode.SnippetString(`\n${commentedExplain}`);
 			editor.insertSnippet(snippet, insertPosition);
 		}
 	});
