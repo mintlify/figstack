@@ -10,7 +10,9 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:fig.explain"
+		"onCommand:fig.explain",
+		"onCommand:fig.docstring",
+		"onCommand:fig.complexity"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -18,6 +20,37 @@
 			{
 				"command": "fig.explain",
 				"title": "Explain Code"
+			},
+			{
+				"command": "fig.docstring",
+				"title": "Write Docstring"
+			},
+			{
+				"command": "fig.complexity",
+				"title": "Get Time Complexity"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "fig.explain",
+				"key": "cmd+ctrl+e",
+				"mac": "cmd+ctrl+e",
+				"win": "ctrl+alt+e",
+				"when": "editorHasSelection"
+			},
+			{
+				"command": "fig.docstring",
+				"key": "cmd+ctrl+d",
+				"mac": "cmd+ctrl+d",
+				"win": "ctrl+alt+d",
+				"when": "editorHasSelection"
+			},
+			{
+				"command": "fig.complexity",
+				"key": "cmd+ctrl+c",
+				"mac": "cmd+ctrl+c",
+				"win": "ctrl+alt+c",
+				"when": "editorHasSelection"
 			}
 		],
 		"menus": {
@@ -25,6 +58,14 @@
 				{
 					"when": "editorHasSelection",
 					"command": "fig.explain"
+				},
+				{
+					"when": "editorHasSelection",
+					"command": "fig.docstring"
+				},
+				{
+					"when": "editorHasSelection",
+					"command": "fig.complexity"
 				}
 			]
 		}
