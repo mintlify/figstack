@@ -10,16 +10,24 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:vsc.helloWorld"
+		"onCommand:fig.explain"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "vsc.helloWorld",
+				"command": "fig.explain",
 				"title": "Hello World"
 			}
-		]
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"when": "editorHasSelection",
+					"command": "fig.explain"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
