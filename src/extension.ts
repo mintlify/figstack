@@ -30,6 +30,10 @@ export function activate(context: vscode.ExtensionContext) {
 		return insertPosition;
 	};
 
+	const login = vscode.commands.registerCommand('fig.login', async () => {
+		figlog("Loggin in");
+	});
+
 	const explainFunction = vscode.commands.registerCommand('fig.explain', async () => {
 		const editor = vscode.window.activeTextEditor;
 		if (editor?.selection) {
@@ -101,7 +105,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	context.subscriptions.push(explainFunction, docstringFunction, complexityFunction);
+	context.subscriptions.push(login, explainFunction, docstringFunction, complexityFunction);
 }
 
 // this method is called when your extension is deactivated

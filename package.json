@@ -10,6 +10,7 @@
 		"Other"
 	],
 	"activationEvents": [
+		"onCommand:fig.login",
 		"onCommand:fig.explain",
 		"onCommand:fig.docstring",
 		"onCommand:fig.complexity"
@@ -17,6 +18,10 @@
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
+			{
+				"command": "fig.login",
+				"title": "Login"
+			},
 			{
 				"command": "fig.explain",
 				"title": "Explain Code"
@@ -53,6 +58,29 @@
 				"when": "editorHasSelection"
 			}
 		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "figstack",
+					"title": "Figstack",
+					"icon": "images/logo.svg"
+				}
+			]
+		},
+		"viewsWelcome": [
+			{
+				"view": "fig-login",
+				"contents": "[Sign in](command:fig.login)\nTo learn more about Fig Functions and quotas, go to [our website](https://figstack.com)."
+			}
+		],
+		"views": {
+			"figstack": [
+				{
+					"id": "fig-login",
+					"name": "Authentication"
+				}
+			]
+		},
 		"menus": {
 			"editor/context": [
 				{
