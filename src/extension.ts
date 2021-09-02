@@ -2,6 +2,7 @@
 import * as dotenv from 'dotenv';
 import * as vscode from 'vscode';
 import axios from 'axios';
+import { URLSearchParams } from "url";
 
 // Temporary: To be removed when building authentication
 const ACCESS_TOKEN = 'qePk62PIzH0La5qAIbv7MHLEFxxFQZfQ';
@@ -16,7 +17,7 @@ class LocalStorageService {
 			return this.storage.get(key, null);
 	}
 
-	public setValue(key: string, value: string) {
+	public setValue(key: string, value: string | null) {
 			this.storage.update(key, value);
 	}
 }
@@ -50,7 +51,7 @@ export function activate(context: vscode.ExtensionContext) {
 		const responseType = 'code';
 		const clientId = IS_DEV ? 'nv8BC1pmSBIw2HMNRqsd8Bkl5xwc1ipN' : 'zyVI6tCd7UQ44NCkqlx3TsulhrLtMYzm';
 		const redirectUri = `${IS_DEV ? 'http://localhost:3000' : 'https://figstack.com'}/api/auth/vscode`;
-		const scope = 'offline_access';
+		const scope = 'openid profile email offline_access';
 		const loginURL = `${auth0Domain}/authorize?response_type=${responseType}&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
 		vscode.env.openExternal(vscode.Uri.parse(loginURL));
 	});
@@ -58,17 +59,31 @@ export function activate(context: vscode.ExtensionContext) {
 	const uriListener = vscode.window.registerUriHandler({
 			async handleUri(uri: vscode.Uri) {
 			if (uri.path === '/callback') {
-				const refreshToken = uri.query.split('=')[1];
+				const query = new URLSearchParams(uri.query);
+				const refreshToken = query.get('refreshToken');
+				const accessToken = query.get('accessToken');
 
-				// Store refresh token into store manager
+				// Store tokesn into store manager
 				storageManager.setValue('refreshToken', refreshToken);
+				storageManager.setValue('accessToken', accessToken);
 			}
 		}
 	});
 
-	const explainFunction = vscode.commands.registerCommand('fig.explain', async () => {
+	const getTokens = () => {
 		const refreshToken = storageManager.getValue('refreshToken');
+		const accessToken = storageManager.getValue('accessToken');
+
+		return { refreshToken, accessToken };
+	};
+
+	const explainFunction = vscode.commands.registerCommand('fig.explain', async () => {
+		// Extract refresh token from storage
+		const { refreshToken, accessToken } = getTokens();
+
 		figlog(refreshToken);
+		figlog(accessToken);
+
 		const editor = vscode.window.activeTextEditor;
 		if (editor?.selection) {
 			const highlight = getSelectedText(editor);
@@ -76,7 +91,8 @@ export function activate(context: vscode.ExtensionContext) {
 			try {
 				const explainResponse = await axios.post('http://localhost:5000/function/v1/explain', {
 					code: highlight,
-					accessToken: ACCESS_TOKEN,
+					accessToken,
+					refreshToken,
 				});
 				const explain = explainResponse.data.output;
 				const commentedExplain = explain.split('\n').map((line: string) => `// ${line}`).join('\n');
