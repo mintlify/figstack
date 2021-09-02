@@ -9,13 +9,23 @@ const ACCESS_TOKEN = 'qePk62PIzH0La5qAIbv7MHLEFxxFQZfQ';
 dotenv.config();
 const IS_DEV = process.env.NODE_ENV === 'development';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+class LocalStorageService {
+	constructor(private storage: vscode.Memento) { }   
+	
+	public getValue(key: string) {
+			return this.storage.get(key, null);
+	}
+
+	public setValue(key: string, value: string) {
+			this.storage.update(key, value);
+	}
+}
+
 export function activate(context: vscode.ExtensionContext) {
 	
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
+	// Initializations
 	const figChannel = vscode.window.createOutputChannel("Figstack");
+	const storageManager = new LocalStorageService(context.globalState);
 
 	// Only use during development
 	const figlog = (log: any) => {
@@ -42,19 +52,23 @@ export function activate(context: vscode.ExtensionContext) {
 		const redirectUri = `${IS_DEV ? 'http://localhost:3000' : 'https://figstack.com'}/api/auth/vscode`;
 		const scope = 'offline_access';
 		const loginURL = `${auth0Domain}/authorize?response_type=${responseType}&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
-		figlog(IS_DEV);
 		vscode.env.openExternal(vscode.Uri.parse(loginURL));
 	});
 
 	const uriListener = vscode.window.registerUriHandler({
-			handleUri(uri: vscode.Uri) {
+			async handleUri(uri: vscode.Uri) {
 			if (uri.path === '/callback') {
-				figlog(uri.query);
+				const refreshToken = uri.query.split('=')[1];
+
+				// Store refresh token into store manager
+				storageManager.setValue('refreshToken', refreshToken);
 			}
 		}
 	});
 
 	const explainFunction = vscode.commands.registerCommand('fig.explain', async () => {
+		const refreshToken = storageManager.getValue('refreshToken');
+		figlog(refreshToken);
 		const editor = vscode.window.activeTextEditor;
 		if (editor?.selection) {
 			const highlight = getSelectedText(editor);
