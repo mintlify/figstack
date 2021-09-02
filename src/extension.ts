@@ -48,9 +48,8 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const uriListener = vscode.window.registerUriHandler({
 			handleUri(uri: vscode.Uri) {
-				figlog(uri.path);
 			if (uri.path === '/callback') {
-				figlog("Authenticating");
+				figlog(uri.query);
 			}
 		}
 	});
