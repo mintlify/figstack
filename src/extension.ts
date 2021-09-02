@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import * as vscode from 'vscode';
 import axios from 'axios';
 
@@ -31,7 +32,23 @@ export function activate(context: vscode.ExtensionContext) {
 	};
 
 	const login = vscode.commands.registerCommand('fig.login', async () => {
-		figlog("Loggin in");
+		const auth0Domain = 'https://dev-uxa1yxhj.us.auth0.com';
+		const responseType = 'code';
+		const clientId = 'nv8BC1pmSBIw2HMNRqsd8Bkl5xwc1ipN';
+		const redirectUri = 'https://figstack.com/api/auth/vscode';
+		const scope = 'offline_access';
+		const loginURL = `${auth0Domain}/authorize?response_type=${responseType}&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
+		figlog(loginURL);
+		vscode.env.openExternal(vscode.Uri.parse(loginURL));
+	});
+
+	const uriListener = vscode.window.registerUriHandler({
+			handleUri(uri: vscode.Uri) {
+				figlog(uri.path);
+			if (uri.path === '/callback') {
+				figlog("Authenticating");
+			}
+		}
 	});
 
 	const explainFunction = vscode.commands.registerCommand('fig.explain', async () => {
@@ -105,7 +122,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	context.subscriptions.push(login, explainFunction, docstringFunction, complexityFunction);
+	context.subscriptions.push(login, explainFunction, docstringFunction, complexityFunction, uriListener);
 }
 
 // this method is called when your extension is deactivated
