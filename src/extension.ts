@@ -4,9 +4,6 @@ import axios from 'axios';
 import { URLSearchParams } from "url";
 import { loginURL } from './constants';
 
-// Temporary: To be removed when building authentication
-const ACCESS_TOKEN = 'qePk62PIzH0La5qAIbv7MHLEFxxFQZfQ';
-
 // Global local storage
 class LocalStorageService {
 	constructor(private storage: vscode.Memento) {}
@@ -49,17 +46,33 @@ export function activate(context: vscode.ExtensionContext) {
 		return insertPosition;
 	};
 
+	type NewTokens = {
+		accessToken: string | null;
+		refreshToken: string | null;
+	};
+
+	const potentiallyReplaceTokens = (newTokens: NewTokens | null | undefined) => {
+		if (newTokens?.accessToken) {
+			storageManager.setValue('refreshToken', newTokens.refreshToken);
+		}
+
+		if (newTokens?.refreshToken) {
+			storageManager.setValue('accessToken', newTokens.accessToken);
+		}
+	};
+
 	const uriListener = vscode.window.registerUriHandler({
 			async handleUri(uri: vscode.Uri) {
 			if (uri.path === '/callback') {
 				const query = new URLSearchParams(uri.query);
-				const refreshToken = query.get('refreshToken');
-				const accessToken = query.get('accessToken');
+
+				const newTokens = {
+					accessToken: query.get('accessToken'),
+					refreshToken: query.get('refreshToken')
+				}; 
 
 				// Store tokesn into store manager
-				storageManager.setValue('refreshToken', refreshToken);
-				storageManager.setValue('accessToken', accessToken);
-
+				potentiallyReplaceTokens(newTokens);
 				vscode.commands.executeCommand('setContext', 'fig.isAuthenticated', true);
 			}
 		}
@@ -89,21 +102,20 @@ export function activate(context: vscode.ExtensionContext) {
 			cancellable: false,
 		}, () => {
 			return new Promise(async (resolve, reject)=> {
-				// Extract refresh token from storage
-				const { refreshToken, accessToken } = getTokens();
-
 				const editor = vscode.window.activeTextEditor;
 				if (editor?.selection) {
 					const highlight = getSelectedText(editor);
 					const insertPosition = getInsertPosition(editor);
 					try {
+						const { refreshToken, accessToken } = getTokens();
 						const explainResponse = await axios.post('http://localhost:5000/function/v1/explain', {
 							code: highlight,
 							accessToken,
 							refreshToken,
 						});
-						const explain = explainResponse.data.output;
-						const commentedExplain = explain.split('\n').map((line: string) => `// ${line}`).join('\n');
+						const { output, newTokens } = explainResponse.data;
+						potentiallyReplaceTokens(newTokens);
+						const commentedExplain = output.split('\n').map((line: string) => `// ${line}`).join('\n');
 						const snippet = new vscode.SnippetString(`${commentedExplain}\n`);
 						editor.insertSnippet(snippet, insertPosition);
 						resolve('Added explination');
@@ -139,13 +151,16 @@ export function activate(context: vscode.ExtensionContext) {
 					};
 
 					try {
+						const { refreshToken, accessToken } = getTokens();
 						const docstringResponse = await axios.post('http://localhost:5000/function/v1/docstring', {
 							code: highlight,
 							inputLanguage,
-							accessToken: ACCESS_TOKEN,
+							accessToken,
+							refreshToken
 						});
-						const docstring = docstringResponse.data.output;
-						const docstringExplain = docstring.split('\n').map((line: string) => `${line}`).join('\n');
+						const { output, newTokens } = docstringResponse.data;
+						potentiallyReplaceTokens(newTokens);
+						const docstringExplain = output.split('\n').map((line: string) => `${line}`).join('\n');
 						const snippet = new vscode.SnippetString(`${docstringExplain}\n`);
 						editor.insertSnippet(snippet, insertPosition);
 						resolve('Complete docstring generation');
@@ -174,13 +189,16 @@ export function activate(context: vscode.ExtensionContext) {
 					const insertPosition = getInsertPosition(editor);
 
 					try {
+						const { refreshToken, accessToken } = getTokens();
 						const complexityResponse = await axios.post('http://localhost:5000/function/v1/complexity', {
 							code: highlight,
 							language: languageId,
-							accessToken: ACCESS_TOKEN,
+							accessToken,
+							refreshToken
 						});
-						const complexity = complexityResponse.data.output;
-						const commentedExplain = `// Time Complexity: O(${complexity})`;
+						const { output, newTokens } = complexityResponse.data;
+						potentiallyReplaceTokens(newTokens);
+						const commentedExplain = `// Time Complexity: O(${output})`;
 						const snippet = new vscode.SnippetString(`${commentedExplain}\n`);
 						editor.insertSnippet(snippet, insertPosition);
 						resolve('Calculated time complexity');
