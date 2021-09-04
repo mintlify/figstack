@@ -77,12 +77,12 @@
 		"viewsWelcome": [
 			{
 				"view": "fig-auth",
-				"contents": "[Sign in](command:fig.login)\nTo learn more about Fig Functions and quotas, go to [our website](https://figstack.com).",
+				"contents": "[Sign in](command:fig.login)\nTo learn more about Figstack, go to [our website](https://figstack.com).",
 				"when": "!fig.isAuthenticated"
 			},
 			{
 				"view": "fig-auth",
-				"contents": "You can now use, go to [our website](https://figstack.com).",
+				"contents": "How to use Figstack\n1. Highlight some code\n2. Right click to open the context menu\n3. Select 'Explain Code' or any other function\nLearn more about Figstack at [our website](https://figstack.com).",
 				"when": "fig.isAuthenticated"
 			}
 		],

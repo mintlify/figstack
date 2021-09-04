@@ -83,78 +83,114 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	const explainFunction = vscode.commands.registerCommand('fig.explain', async () => {
-		// Extract refresh token from storage
-		const { refreshToken, accessToken } = getTokens();
+		vscode.window.withProgress({
+			location: vscode.ProgressLocation.Notification,
+			title: 'Explaining code',
+			cancellable: false,
+		}, () => {
+			return new Promise(async (resolve, reject)=> {
+				// Extract refresh token from storage
+				const { refreshToken, accessToken } = getTokens();
 
-		const editor = vscode.window.activeTextEditor;
-		if (editor?.selection) {
-			const highlight = getSelectedText(editor);
-			const insertPosition = getInsertPosition(editor);
-			try {
-				const explainResponse = await axios.post('http://localhost:5000/function/v1/explain', {
-					code: highlight,
-					accessToken,
-					refreshToken,
-				});
-				const explain = explainResponse.data.output;
-				const commentedExplain = explain.split('\n').map((line: string) => `// ${line}`).join('\n');
-				const snippet = new vscode.SnippetString(`${commentedExplain}\n`);
-				editor.insertSnippet(snippet, insertPosition);
-			} catch (err) {
-				vscode.window.showErrorMessage(err);
-			}
-		}
+				const editor = vscode.window.activeTextEditor;
+				if (editor?.selection) {
+					const highlight = getSelectedText(editor);
+					const insertPosition = getInsertPosition(editor);
+					try {
+						const explainResponse = await axios.post('http://localhost:5000/function/v1/explain', {
+							code: highlight,
+							accessToken,
+							refreshToken,
+						});
+						const explain = explainResponse.data.output;
+						const commentedExplain = explain.split('\n').map((line: string) => `// ${line}`).join('\n');
+						const snippet = new vscode.SnippetString(`${commentedExplain}\n`);
+						editor.insertSnippet(snippet, insertPosition);
+						resolve('Added explination');
+
+					} catch (err) {
+						// TBD: Throw error message from backend
+						vscode.window.showErrorMessage('Unable to generate a result. Please try again later');
+						reject(err);
+					}
+				} else {
+					reject('No text selected');
+				}
+			});
+		});
 	});
 
 	const docstringFunction = vscode.commands.registerCommand('fig.docstring', async () => {
-		const editor = vscode.window.activeTextEditor;
-		if (editor?.selection) {
-			const highlight = getSelectedText(editor);
-			const languageId = editor.document.languageId;
-			const insertPosition = getInsertPosition(editor);
+		vscode.window.withProgress({
+			location: vscode.ProgressLocation.Notification,
+			title: 'Generating docstring',
+			cancellable: false,
+		}, () => {
+			return new Promise(async (resolve, reject)=> {
+				const editor = vscode.window.activeTextEditor;
+				if (editor?.selection) {
+					const highlight = getSelectedText(editor);
+					const languageId = editor.document.languageId;
+					const insertPosition = getInsertPosition(editor);
 
-			const inputLanguage = {
-				comment: '//',
-				commentedName: `// ${languageId}`
-			};
+					const inputLanguage = {
+						comment: '//',
+						commentedName: `// ${languageId}`
+					};
 
-			try {
-				const docstringResponse = await axios.post('http://localhost:5000/function/v1/docstring', {
-					code: highlight,
-					inputLanguage,
-					accessToken: ACCESS_TOKEN,
-				});
-				const docstring = docstringResponse.data.output;
-				const docstringExplain = docstring.split('\n').map((line: string) => `${line}`).join('\n');
-				const snippet = new vscode.SnippetString(`${docstringExplain}\n`);
-				editor.insertSnippet(snippet, insertPosition);
-			} catch (err) {
-				vscode.window.showErrorMessage(err);
-			}
-		}
+					try {
+						const docstringResponse = await axios.post('http://localhost:5000/function/v1/docstring', {
+							code: highlight,
+							inputLanguage,
+							accessToken: ACCESS_TOKEN,
+						});
+						const docstring = docstringResponse.data.output;
+						const docstringExplain = docstring.split('\n').map((line: string) => `${line}`).join('\n');
+						const snippet = new vscode.SnippetString(`${docstringExplain}\n`);
+						editor.insertSnippet(snippet, insertPosition);
+						resolve('Complete docstring generation');
+					} catch (err) {
+						vscode.window.showErrorMessage('Unable to generate a result. Please try again later');
+						reject(err);
+					}
+				} else {
+					reject('No text selected');
+				}
+		});
+	});
 	});
 
 	const complexityFunction = vscode.commands.registerCommand('fig.complexity', async () => {
-		const editor = vscode.window.activeTextEditor;
-		if (editor?.selection) {
-			const highlight = getSelectedText(editor);
-			const languageId = editor.document.languageId;
-			const insertPosition = getInsertPosition(editor);
+		vscode.window.withProgress({
+			location: vscode.ProgressLocation.Notification,
+			title: 'Calculating time complexity',
+			cancellable: false,
+		}, () => {
+			return new Promise(async (resolve, reject)=> {
+				const editor = vscode.window.activeTextEditor;
+				if (editor?.selection) {
+					const highlight = getSelectedText(editor);
+					const languageId = editor.document.languageId;
+					const insertPosition = getInsertPosition(editor);
 
-			try {
-				const complexityResponse = await axios.post('http://localhost:5000/function/v1/complexity', {
-					code: highlight,
-					language: languageId,
-					accessToken: ACCESS_TOKEN,
-				});
-				const complexity = complexityResponse.data.output;
-				const commentedExplain = `// Time Complexity: O(${complexity})`;
-				const snippet = new vscode.SnippetString(`${commentedExplain}\n`);
-				editor.insertSnippet(snippet, insertPosition);
-			} catch (err) {
-				vscode.window.showErrorMessage(err);
-			}
-		}
+					try {
+						const complexityResponse = await axios.post('http://localhost:5000/function/v1/complexity', {
+							code: highlight,
+							language: languageId,
+							accessToken: ACCESS_TOKEN,
+						});
+						const complexity = complexityResponse.data.output;
+						const commentedExplain = `// Time Complexity: O(${complexity})`;
+						const snippet = new vscode.SnippetString(`${commentedExplain}\n`);
+						editor.insertSnippet(snippet, insertPosition);
+						resolve('Calculated time complexity');
+					} catch (err) {
+						vscode.window.showErrorMessage('Unable to generate a result. Please try again later');
+						resolve(err);
+					}
+				}
+		});
+	});
 	});
 
 	context.subscriptions.push(login, logout, explainFunction, docstringFunction, complexityFunction, uriListener);
