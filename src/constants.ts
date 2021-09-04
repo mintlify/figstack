@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-const IS_DEV = process.env.NODE_ENV === 'development';
+const IS_DEV = false;
 export const FRONTEND_ENDPOINT = IS_DEV ? 'http://localhost:3000' : 'https://figstack.com';
 export const BACKEND_ENDPOINT = IS_DEV ? 'http://localhost:5000' : 'https://api.figstack.com';
 

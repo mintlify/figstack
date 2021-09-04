@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- ## [0.1] - 2021-09-04
+
+### Changed
+
+- Use production environment for extension
+
 - ## [0.02] - 2021-09-04
 
 ### Changed
@@ -26,5 +32,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Time Complexity` function.
 
 [Unreleased]: https://github.com/figstack/vscode
+[0.1]: https://github.com/figstack/vscode
 [0.02]: https://github.com/figstack/vscode
 [0.01]: https://github.com/figstack/vscode

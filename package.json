@@ -3,7 +3,7 @@
 	"displayName": "Figstack",
 	"description": "Your intelligent coding companion",
 	"icon": "images/logo.png",
-	"version": "0.0.3",
+	"version": "0.1",
 	"publisher": "figstack",
 	"repository": {
 		"url": "https://github.com/figstack/vscode"
