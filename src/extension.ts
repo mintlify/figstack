@@ -4,6 +4,19 @@ import axios from 'axios';
 import { URLSearchParams } from "url";
 import { loginURL } from './constants';
 
+type NewTokens = {
+	accessToken: string | null;
+	refreshToken: string | null;
+};
+
+type ResponseError = {
+	response: {
+		error: {
+			data: string;
+		}
+	}
+};
+
 // Global local storage
 class LocalStorageService {
 	constructor(private storage: vscode.Memento) {}
@@ -44,11 +57,6 @@ export function activate(context: vscode.ExtensionContext) {
 		const firstLine = editor.document.lineAt(editor.selection.start.line);
 		const insertPosition = new vscode.Position(editor.selection.start.line, firstLine.firstNonWhitespaceCharacterIndex);
 		return insertPosition;
-	};
-
-	type NewTokens = {
-		accessToken: string | null;
-		refreshToken: string | null;
 	};
 
 	const potentiallyReplaceTokens = (newTokens: NewTokens | null | undefined) => {
@@ -120,7 +128,7 @@ export function activate(context: vscode.ExtensionContext) {
 						editor.insertSnippet(snippet, insertPosition);
 						resolve('Added explination');
 
-					} catch (err) {
+					} catch (err: any) {
 						vscode.window.showErrorMessage(err.response.data.error);
 						reject(err.response.data.error);
 					}
@@ -163,7 +171,7 @@ export function activate(context: vscode.ExtensionContext) {
 						const snippet = new vscode.SnippetString(`${docstringExplain}\n`);
 						editor.insertSnippet(snippet, insertPosition);
 						resolve('Complete docstring generation');
-					} catch (err) {
+					} catch (err: any) {
 						vscode.window.showErrorMessage(err.response.data.error);
 						reject(err.response.data.error);
 					}
@@ -201,7 +209,7 @@ export function activate(context: vscode.ExtensionContext) {
 						const snippet = new vscode.SnippetString(`${commentedExplain}\n`);
 						editor.insertSnippet(snippet, insertPosition);
 						resolve('Calculated time complexity');
-					} catch (err) {
+					} catch (err: any) {
 						vscode.window.showErrorMessage(err.response.data.error);
 						resolve(err.response.data.error);
 					}
