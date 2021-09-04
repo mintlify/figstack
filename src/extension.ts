@@ -121,9 +121,8 @@ export function activate(context: vscode.ExtensionContext) {
 						resolve('Added explination');
 
 					} catch (err) {
-						// TBD: Throw error message from backend
-						vscode.window.showErrorMessage('Unable to generate a result. Please try again later');
-						reject(err);
+						vscode.window.showErrorMessage(err.response.data.error);
+						reject(err.response.data.error);
 					}
 				} else {
 					reject('No text selected');
@@ -165,8 +164,8 @@ export function activate(context: vscode.ExtensionContext) {
 						editor.insertSnippet(snippet, insertPosition);
 						resolve('Complete docstring generation');
 					} catch (err) {
-						vscode.window.showErrorMessage('Unable to generate a result. Please try again later');
-						reject(err);
+						vscode.window.showErrorMessage(err.response.data.error);
+						reject(err.response.data.error);
 					}
 				} else {
 					reject('No text selected');
@@ -203,8 +202,8 @@ export function activate(context: vscode.ExtensionContext) {
 						editor.insertSnippet(snippet, insertPosition);
 						resolve('Calculated time complexity');
 					} catch (err) {
-						vscode.window.showErrorMessage('Unable to generate a result. Please try again later');
-						resolve(err);
+						vscode.window.showErrorMessage(err.response.data.error);
+						resolve(err.response.data.error);
 					}
 				}
 		});
