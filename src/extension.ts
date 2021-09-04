@@ -1,17 +1,15 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import * as dotenv from 'dotenv';
 import * as vscode from 'vscode';
 import axios from 'axios';
 import { URLSearchParams } from "url";
+import { loginURL } from './constants';
 
 // Temporary: To be removed when building authentication
 const ACCESS_TOKEN = 'qePk62PIzH0La5qAIbv7MHLEFxxFQZfQ';
 
-dotenv.config();
-const IS_DEV = process.env.NODE_ENV === 'development';
-
+// Global local storage
 class LocalStorageService {
-	constructor(private storage: vscode.Memento) { }   
+	constructor(private storage: vscode.Memento) {}
 	
 	public getValue(key: string) {
 			return this.storage.get(key, null);
@@ -29,10 +27,15 @@ export function activate(context: vscode.ExtensionContext) {
 	const storageManager = new LocalStorageService(context.globalState);
 
 	// Only use during development
+	// Reference with figlog(string);
 	const figlog = (log: any) => {
 		figChannel.show();
 		figChannel.appendLine(log);
 	};
+
+	// Add custom when clause for sidebar menu
+	const isAuthenticated = storageManager.getValue('accessToken') !== null;
+	vscode.commands.executeCommand('setContext', 'fig.isAuthenticated', isAuthenticated);
 
 	const getSelectedText = (editor: vscode.TextEditor): string => {
 		const highlightRange = new vscode.Range(editor.selection.start, editor.selection.end);
@@ -46,16 +49,6 @@ export function activate(context: vscode.ExtensionContext) {
 		return insertPosition;
 	};
 
-	const login = vscode.commands.registerCommand('fig.login', async () => {
-		const auth0Domain = IS_DEV ? 'https://dev-uxa1yxhj.us.auth0.com' : 'https://figstack.us.auth0.com';
-		const responseType = 'code';
-		const clientId = IS_DEV ? 'nv8BC1pmSBIw2HMNRqsd8Bkl5xwc1ipN' : 'zyVI6tCd7UQ44NCkqlx3TsulhrLtMYzm';
-		const redirectUri = `${IS_DEV ? 'http://localhost:3000' : 'https://figstack.com'}/api/auth/vscode`;
-		const scope = 'openid profile email offline_access';
-		const loginURL = `${auth0Domain}/authorize?response_type=${responseType}&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
-		vscode.env.openExternal(vscode.Uri.parse(loginURL));
-	});
-
 	const uriListener = vscode.window.registerUriHandler({
 			async handleUri(uri: vscode.Uri) {
 			if (uri.path === '/callback') {
@@ -66,6 +59,8 @@ export function activate(context: vscode.ExtensionContext) {
 				// Store tokesn into store manager
 				storageManager.setValue('refreshToken', refreshToken);
 				storageManager.setValue('accessToken', accessToken);
+
+				vscode.commands.executeCommand('setContext', 'fig.isAuthenticated', true);
 			}
 		}
 	});
@@ -77,12 +72,19 @@ export function activate(context: vscode.ExtensionContext) {
 		return { refreshToken, accessToken };
 	};
 
+	const login = vscode.commands.registerCommand('fig.login', async () => {
+		vscode.env.openExternal(vscode.Uri.parse(loginURL));
+	});
+
+	const logout = vscode.commands.registerCommand('fig.logout', async () => {
+		storageManager.setValue('accessToken', null);
+		storageManager.setValue('refreshToken', null);
+		vscode.commands.executeCommand('setContext', 'fig.isAuthenticated', false);
+	});
+
 	const explainFunction = vscode.commands.registerCommand('fig.explain', async () => {
 		// Extract refresh token from storage
 		const { refreshToken, accessToken } = getTokens();
-
-		figlog(refreshToken);
-		figlog(accessToken);
 
 		const editor = vscode.window.activeTextEditor;
 		if (editor?.selection) {
@@ -155,8 +157,5 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	context.subscriptions.push(login, explainFunction, docstringFunction, complexityFunction, uriListener);
+	context.subscriptions.push(login, logout, explainFunction, docstringFunction, complexityFunction, uriListener);
 }
-
-// this method is called when your extension is deactivated
-export function deactivate() {}

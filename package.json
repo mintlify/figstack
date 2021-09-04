@@ -11,7 +11,9 @@
 		"Other"
 	],
 	"activationEvents": [
+		"onView:fig-auth",
 		"onCommand:fig.login",
+		"onCommand:fig.logout",
 		"onCommand:fig.explain",
 		"onCommand:fig.docstring",
 		"onCommand:fig.complexity"
@@ -22,6 +24,10 @@
 			{
 				"command": "fig.login",
 				"title": "Login"
+			},
+			{
+				"command": "fig.logout",
+				"title": "Logout"
 			},
 			{
 				"command": "fig.explain",
@@ -70,19 +76,31 @@
 		},
 		"viewsWelcome": [
 			{
-				"view": "fig-login",
-				"contents": "[Sign in](command:fig.login)\nTo learn more about Fig Functions and quotas, go to [our website](https://figstack.com)."
+				"view": "fig-auth",
+				"contents": "[Sign in](command:fig.login)\nTo learn more about Fig Functions and quotas, go to [our website](https://figstack.com).",
+				"when": "!fig.isAuthenticated"
+			},
+			{
+				"view": "fig-auth",
+				"contents": "You can now use, go to [our website](https://figstack.com).",
+				"when": "fig.isAuthenticated"
 			}
 		],
 		"views": {
 			"figstack": [
 				{
-					"id": "fig-login",
+					"id": "fig-auth",
 					"name": "Authentication"
 				}
 			]
 		},
 		"menus": {
+			"view/title": [
+				{
+					"when": "fig.isAuthenticated",
+					"command": "fig.logout"
+				}
+			],
 			"editor/context": [
 				{
 					"when": "editorHasSelection",
