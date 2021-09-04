@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1] - 2021-09-04
+- ## [0.02] - 2021-09-04
+
+### Changed
+
+- Add logo icon
+
+## [0.01] - 2021-09-04
 
 ### Added
 
@@ -19,5 +25,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Write Docstring` function.
 - `Time Complexity` function.
 
-[Unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/v1.0.0...HEAD
-[0.1]: https://github.com/olivierlacan/keep-a-changelog/compare/v0.3.0...v1.0.0
+[Unreleased]: https://github.com/figstack/vscode
+[0.02]: https://github.com/figstack/vscode
+[0.01]: https://github.com/figstack/vscode

@@ -2,8 +2,12 @@
 	"name": "vsc",
 	"displayName": "Figstack",
 	"description": "Your intelligent coding companion",
-	"version": "0.0.1",
+	"icon": "images/logo.png",
+	"version": "0.0.3",
 	"publisher": "figstack",
+	"repository": {
+		"url": "https://github.com/figstack/vscode"
+	},
 	"engines": {
 		"vscode": "^1.59.0"
 	},
@@ -70,7 +74,7 @@
 				{
 					"id": "figstack",
 					"title": "Figstack",
-					"icon": "images/logo.png"
+					"icon": "images/icon.png"
 				}
 			]
 		},
