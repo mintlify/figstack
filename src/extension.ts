@@ -2,19 +2,11 @@
 import * as vscode from 'vscode';
 import axios from 'axios';
 import { URLSearchParams } from "url";
-import { loginURL } from './constants';
+import { BACKEND_ENDPOINT, loginURL } from './constants';
 
 type NewTokens = {
 	accessToken: string | null;
 	refreshToken: string | null;
-};
-
-type ResponseError = {
-	response: {
-		error: {
-			data: string;
-		}
-	}
 };
 
 // Global local storage
@@ -22,11 +14,11 @@ class LocalStorageService {
 	constructor(private storage: vscode.Memento) {}
 	
 	public getValue(key: string) {
-			return this.storage.get(key, null);
+		return this.storage.get(key, null);
 	}
 
 	public setValue(key: string, value: string | null) {
-			this.storage.update(key, value);
+		this.storage.update(key, value);
 	}
 }
 
@@ -116,7 +108,7 @@ export function activate(context: vscode.ExtensionContext) {
 					const insertPosition = getInsertPosition(editor);
 					try {
 						const { refreshToken, accessToken } = getTokens();
-						const explainResponse = await axios.post('http://localhost:5000/function/v1/explain', {
+						const explainResponse = await axios.post(`${BACKEND_ENDPOINT}/function/v1/explain`, {
 							code: highlight,
 							accessToken,
 							refreshToken,
@@ -159,7 +151,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 					try {
 						const { refreshToken, accessToken } = getTokens();
-						const docstringResponse = await axios.post('http://localhost:5000/function/v1/docstring', {
+						const docstringResponse = await axios.post(`${BACKEND_ENDPOINT}/function/v1/docstring`, {
 							code: highlight,
 							inputLanguage,
 							accessToken,
@@ -167,7 +159,7 @@ export function activate(context: vscode.ExtensionContext) {
 						});
 						const { output, newTokens } = docstringResponse.data;
 						potentiallyReplaceTokens(newTokens);
-						const docstringExplain = output.split('\n').map((line: string) => `${line}`).join('\n');
+						const docstringExplain = output.split('\n').map((line: string) => `# ${line}`).join('\n');
 						const snippet = new vscode.SnippetString(`${docstringExplain}\n`);
 						editor.insertSnippet(snippet, insertPosition);
 						resolve('Complete docstring generation');
@@ -197,7 +189,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 					try {
 						const { refreshToken, accessToken } = getTokens();
-						const complexityResponse = await axios.post('http://localhost:5000/function/v1/complexity', {
+						const complexityResponse = await axios.post(`${BACKEND_ENDPOINT}/function/v1/complexity`, {
 							code: highlight,
 							language: languageId,
 							accessToken,

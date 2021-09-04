@@ -1,71 +1,29 @@
-# vsc README
+# Figstack
 
-This is the README for your extension "vsc". After writing up a brief description, we recommend including the following sections.
+[Figstack](https://figstack.com) helps you read, write, and understand code. Currently, Figstack can explain code, generate documentation, and calculate the time complexity of functions.
 
-## Features
+## Explain Code
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Having trouble understanding the program that you're looking at? Use `Explain Code` to explain it to you in natural language.
 
-For example if there is an image subfolder under your extension project workspace:
+## Write Docstring
 
-\!\[feature X\]\(images/feature-x.png\)
+Don't like writing documentation for your functions? Have Figstack's `Docstring Writer` craft detailed docstrings so your functions are always readable and maintable.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## Calculate Time Complexity
 
-## Requirements
+Measure the efficiency of your code in Big O notation using `Time Complexity` and see how you can optimize your program.
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## Authentication
 
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+In order to use the extension, you must sign in with a [Figstack account](https://figstack.com). You can sign in by clicking on the Figstack icon in sidebar.
 
 -----------------------------------------------------------------------------------------------------------
-## Following extension guidelines
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+## Learn more about Figstack
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+Check out our [website](https://figstack.com) or contact us at [hi@figstack.com](mailto:hi@figstack.com)
 
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
-# vscode
+[Community](https://join.slack.com/t/figstack/shared_invite/zt-uoz4xieq-A59OSZ9cYtjoVw17PIJt_A)
+[Twitter](https://twitter.com/FigstackApp)
+[LinkedIn](https://www.linkedin.com/company/figstack)
