@@ -2,7 +2,7 @@
 import * as vscode from 'vscode';
 import axios from 'axios';
 import { URLSearchParams } from "url";
-import { BACKEND_ENDPOINT, loginURL } from './constants';
+import { BACKEND_ENDPOINT, loginURL, logoutURL } from './constants';
 import { addComments } from './utility/comments';
 
 type NewTokens = {
@@ -75,6 +75,10 @@ export function activate(context: vscode.ExtensionContext) {
 				// Store tokesn into store manager
 				potentiallyReplaceTokens(newTokens);
 				vscode.commands.executeCommand('setContext', 'fig.isAuthenticated', true);
+			} else if (uri.path === '/logout') {
+				storageManager.setValue('accessToken', null);
+				storageManager.setValue('refreshToken', null);
+				vscode.commands.executeCommand('setContext', 'fig.isAuthenticated', false);
 			}
 		}
 	});
@@ -91,9 +95,7 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	const logout = vscode.commands.registerCommand('fig.logout', async () => {
-		storageManager.setValue('accessToken', null);
-		storageManager.setValue('refreshToken', null);
-		vscode.commands.executeCommand('setContext', 'fig.isAuthenticated', false);
+		vscode.env.openExternal(vscode.Uri.parse(logoutURL));
 	});
 
 	const explainFunction = vscode.commands.registerCommand('fig.explain', async () => {

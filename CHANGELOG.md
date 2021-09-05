@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- ## [0.1.2] - 2021-09-04
+
+### Added
+
+- Support for test files with .test file extensions
+- Creating new user on authentication
+- Ability to properly log out to another account
+
 - ## [0.1.1] - 2021-09-04
 
 ### Added

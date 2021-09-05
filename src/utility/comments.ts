@@ -11,7 +11,8 @@ const singleLine = (code: string, comment: string): string => {
 };
 
 export const addComments = (code: string, filename: string): string => {
-  const extension = filename.toLowerCase().split('.')[1];
+  const splitFilename = filename.toLowerCase().split('.');
+  const extension = splitFilename[splitFilename.length - 1];
 
   if (!extension) {
     return code;
