@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import axios from 'axios';
 import { URLSearchParams } from "url";
 import { BACKEND_ENDPOINT, loginURL } from './constants';
+import { addComments } from './utility/comments';
 
 type NewTokens = {
 	accessToken: string | null;
@@ -69,7 +70,7 @@ export function activate(context: vscode.ExtensionContext) {
 				const newTokens = {
 					accessToken: query.get('accessToken'),
 					refreshToken: query.get('refreshToken')
-				}; 
+				};
 
 				// Store tokesn into store manager
 				potentiallyReplaceTokens(newTokens);
@@ -99,7 +100,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.withProgress({
 			location: vscode.ProgressLocation.Notification,
 			title: 'Explaining code',
-			cancellable: false,
+			cancellable: true,
 		}, () => {
 			return new Promise(async (resolve, reject)=> {
 				const editor = vscode.window.activeTextEditor;
@@ -115,7 +116,8 @@ export function activate(context: vscode.ExtensionContext) {
 						});
 						const { output, newTokens } = explainResponse.data;
 						potentiallyReplaceTokens(newTokens);
-						const commentedExplain = output.split('\n').map((line: string) => `// ${line}`).join('\n');
+						// Add language here
+						const commentedExplain = addComments(output, editor.document.fileName);
 						const snippet = new vscode.SnippetString(`${commentedExplain}\n`);
 						editor.insertSnippet(snippet, insertPosition);
 						resolve('Added explination');
@@ -135,7 +137,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.withProgress({
 			location: vscode.ProgressLocation.Notification,
 			title: 'Generating docstring',
-			cancellable: false,
+			cancellable: true,
 		}, () => {
 			return new Promise(async (resolve, reject)=> {
 				const editor = vscode.window.activeTextEditor;
@@ -159,7 +161,7 @@ export function activate(context: vscode.ExtensionContext) {
 						});
 						const { output, newTokens } = docstringResponse.data;
 						potentiallyReplaceTokens(newTokens);
-						const docstringExplain = output.split('\n').map((line: string) => `# ${line}`).join('\n');
+						const docstringExplain = addComments(output, editor.document.fileName);
 						const snippet = new vscode.SnippetString(`${docstringExplain}\n`);
 						editor.insertSnippet(snippet, insertPosition);
 						resolve('Complete docstring generation');
@@ -178,7 +180,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.withProgress({
 			location: vscode.ProgressLocation.Notification,
 			title: 'Calculating time complexity',
-			cancellable: false,
+			cancellable: true,
 		}, () => {
 			return new Promise(async (resolve, reject)=> {
 				const editor = vscode.window.activeTextEditor;
@@ -197,7 +199,7 @@ export function activate(context: vscode.ExtensionContext) {
 						});
 						const { output, newTokens } = complexityResponse.data;
 						potentiallyReplaceTokens(newTokens);
-						const commentedExplain = `// Time Complexity: O(${output})`;
+						const commentedExplain = addComments(`Time Complexity: O(${output})`, editor.document.fileName);
 						const snippet = new vscode.SnippetString(`${commentedExplain}\n`);
 						editor.insertSnippet(snippet, insertPosition);
 						resolve('Calculated time complexity');
