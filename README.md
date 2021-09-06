@@ -1,5 +1,7 @@
 # Figstack
 
+![Version](https://img.shields.io/visual-studio-marketplace/v/figstack.vsc) ![Ratings](https://img.shields.io/visual-studio-marketplace/r/figstack.vsc)
+
 [Figstack](https://figstack.com) helps you read, write, and understand code. Currently, Figstack can explain code, generate documentation, and calculate the time complexity of functions.
 
 ## Explain Code
