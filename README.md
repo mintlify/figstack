@@ -6,13 +6,19 @@
 
 Having trouble understanding the program that you're looking at? Use `Explain Code` to explain it to you in natural language.
 
+![Explain Code](/images/explain.jpg)
+
 ## Write Docstring
 
 Don't like writing documentation for your functions? Have Figstack's `Docstring Writer` craft detailed docstrings so your functions are always readable and maintable.
 
+![Write Docstring](/images/docstring.jpg)
+
 ## Calculate Time Complexity
 
 Measure the efficiency of your code in Big O notation using `Time Complexity` and see how you can optimize your program.
+
+![Time Complexity](/images/complexity.jpg)
 
 ## Authentication
 
