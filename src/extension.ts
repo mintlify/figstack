@@ -30,7 +30,7 @@ export function activate(context: vscode.ExtensionContext) {
 	const storageManager = new LocalStorageService(context.globalState);
 
 	// Only use during development
-	// Reference with figlog(string);
+	// Reference with figlog(log);
 	const figlog = (log: any) => {
 		figChannel.show();
 		figChannel.appendLine(log);
@@ -115,6 +115,7 @@ export function activate(context: vscode.ExtensionContext) {
 							code: highlight,
 							accessToken,
 							refreshToken,
+							source: 'vscode'
 						});
 						const { output, newTokens } = explainResponse.data;
 						potentiallyReplaceTokens(newTokens);
@@ -159,7 +160,8 @@ export function activate(context: vscode.ExtensionContext) {
 							code: highlight,
 							inputLanguage,
 							accessToken,
-							refreshToken
+							refreshToken,
+							source: 'vscode'
 						});
 						const { output, newTokens } = docstringResponse.data;
 						potentiallyReplaceTokens(newTokens);
@@ -197,7 +199,8 @@ export function activate(context: vscode.ExtensionContext) {
 							code: highlight,
 							language: languageId,
 							accessToken,
-							refreshToken
+							refreshToken,
+							source: 'vscode'
 						});
 						const { output, newTokens } = complexityResponse.data;
 						potentiallyReplaceTokens(newTokens);
