@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- ## [0.1.2] - 2021-09-11
+
+- ### Changed
+
+- Docstring function V2 with dramatically improved and more reliable results
+
 - ## [0.1.2] - 2021-09-04
 
 ### Added
@@ -46,6 +52,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Time Complexity` function.
 
 [Unreleased]: https://github.com/figstack/vscode
+[1.0.2]: https://github.com/figstack/vscode
+[1.0.1]: https://github.com/figstack/vscode
+[0.1.1]: https://github.com/figstack/vscode
+[0.1.2]: https://github.com/figstack/vscode
 [0.1]: https://github.com/figstack/vscode
 [0.02]: https://github.com/figstack/vscode
 [0.01]: https://github.com/figstack/vscode

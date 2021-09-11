@@ -146,19 +146,12 @@ export function activate(context: vscode.ExtensionContext) {
 				const editor = vscode.window.activeTextEditor;
 				if (editor?.selection) {
 					const highlight = getSelectedText(editor);
-					const languageId = editor.document.languageId;
 					const insertPosition = getInsertPosition(editor);
-
-					const inputLanguage = {
-						comment: '//',
-						commentedName: `// ${languageId}`
-					};
 
 					try {
 						const { refreshToken, accessToken } = getTokens();
-						const docstringResponse = await axios.post(`${BACKEND_ENDPOINT}/function/v1/docstring`, {
+						const docstringResponse = await axios.post(`${BACKEND_ENDPOINT}/function/v2/docstring`, {
 							code: highlight,
-							inputLanguage,
 							accessToken,
 							refreshToken,
 							source: 'vscode'
