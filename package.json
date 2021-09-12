@@ -3,7 +3,7 @@
 	"displayName": "Figstack",
 	"description": "Your intelligent coding companion",
 	"icon": "images/logo.png",
-	"version": "1.0.2",
+	"version": "1.1.0",
 	"publisher": "figstack",
 	"repository": {
 		"url": "https://github.com/figstack/vscode"
@@ -19,6 +19,8 @@
 		"onCommand:fig.login",
 		"onCommand:fig.logout",
 		"onCommand:fig.explain",
+		"onCommand:fig.ask",
+		"onCommand:fig.askFile",
 		"onCommand:fig.docstring",
 		"onCommand:fig.complexity"
 	],
@@ -38,6 +40,14 @@
 				"title": "Explain Code"
 			},
 			{
+				"command": "fig.ask",
+				"title": "Ask Question"
+			},
+			{
+				"command": "fig.askFile",
+				"title": "Ask Question"
+			},
+			{
 				"command": "fig.docstring",
 				"title": "Write Docstring"
 			},
@@ -53,6 +63,20 @@
 				"mac": "cmd+ctrl+e",
 				"win": "ctrl+alt+e",
 				"when": "editorHasSelection"
+			},
+			{
+				"command": "fig.ask",
+				"key": "cmd+ctrl+a",
+				"mac": "cmd+ctrl+a",
+				"win": "ctrl+alt+a",
+				"when": "editorHasSelection"
+			},
+			{
+				"command": "fig.askFile",
+				"key": "cmd+ctrl+a",
+				"mac": "cmd+ctrl+a",
+				"win": "ctrl+alt+a",
+				"when": "!editorHasSelection"
 			},
 			{
 				"command": "fig.docstring",
@@ -109,6 +133,14 @@
 				{
 					"when": "editorHasSelection",
 					"command": "fig.explain"
+				},
+				{
+					"when": "editorHasSelection",
+					"command": "fig.ask"
+				},
+				{
+					"when": "!editorHasSelection",
+					"command": "fig.askFile"
 				},
 				{
 					"when": "editorHasSelection",

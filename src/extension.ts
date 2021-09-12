@@ -136,13 +136,92 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 	});
 
+	const askFunction = vscode.commands.registerCommand('fig.ask', async () => {
+		const question = await vscode.window.showInputBox(
+			{ title: 'What would you like to ask about the selected code?', placeHolder: 'Enter you question here' }
+		);
+
+		if (!question) {return;}
+
+		vscode.window.withProgress({
+			location: vscode.ProgressLocation.Notification,
+			title: 'Answering question',
+			cancellable: true,
+		}, () => {
+			return new Promise(async (resolve, reject) => {
+
+		const editor = vscode.window.activeTextEditor;
+		if (editor?.selection) {
+			const highlight = getSelectedText(editor);
+
+			try {
+				const { refreshToken, accessToken } = getTokens();
+				const askResponse = await axios.post(`${BACKEND_ENDPOINT}/function/v1/ask`, {
+					code: highlight,
+					question,
+					accessToken,
+					refreshToken,
+					source: 'vscode'
+				});
+				const { output, newTokens } = askResponse.data;
+				potentiallyReplaceTokens(newTokens);
+				vscode.window.showInformationMessage(output);
+				resolve(output);
+			} catch (err: any) {
+				vscode.window.showErrorMessage(err.response.data.error);
+				reject(err.response.data.error);
+			}
+		}
+	});
+	});
+	});
+
+	const askFileFunction = vscode.commands.registerCommand('fig.askFile', async () => {
+		const question = await vscode.window.showInputBox(
+			{ title: 'What would you like to ask about the file?', placeHolder: 'Enter you question here' }
+		);
+
+		if (!question) {return;}
+
+		vscode.window.withProgress({
+			location: vscode.ProgressLocation.Notification,
+			title: 'Answering question',
+			cancellable: true,
+		}, () => {
+			return new Promise(async (resolve, reject) => {
+
+		const editor = vscode.window.activeTextEditor;
+		const fileText = editor?.document.getText();
+		if (fileText) {
+			try {
+				const { refreshToken, accessToken } = getTokens();
+				const askResponse = await axios.post(`${BACKEND_ENDPOINT}/function/v1/ask`, {
+					code: fileText,
+					question,
+					accessToken,
+					refreshToken,
+					source: 'vscode'
+				});
+				const { output, newTokens } = askResponse.data;
+				potentiallyReplaceTokens(newTokens);
+				vscode.window.showInformationMessage(output);
+				resolve(output);
+			} catch (err: any) {
+				vscode.window.showErrorMessage(err.response.data.error);
+				reject(err.response.data.error);
+			}
+		}
+	});
+	});
+	});
+
 	const docstringFunction = vscode.commands.registerCommand('fig.docstring', async () => {
 		vscode.window.withProgress({
 			location: vscode.ProgressLocation.Notification,
 			title: 'Generating docstring',
 			cancellable: true,
 		}, () => {
-			return new Promise(async (resolve, reject)=> {
+			return new Promise(async (resolve, reject) => {
 				const editor = vscode.window.activeTextEditor;
 				if (editor?.selection) {
 					const highlight = getSelectedText(editor);
@@ -210,5 +289,8 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 	});
 
-	context.subscriptions.push(login, logout, explainFunction, docstringFunction, complexityFunction, uriListener);
+	context.subscriptions.push(
+		login, logout, explainFunction, askFunction, askFileFunction,
+		complexityFunction, docstringFunction, uriListener
+	);
 }
