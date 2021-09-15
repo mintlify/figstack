@@ -98,44 +98,6 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.env.openExternal(vscode.Uri.parse(logoutURL));
   });
 
-  const explainFunction = vscode.commands.registerCommand('fig.explain', async () => {
-    vscode.window.withProgress({
-      location: vscode.ProgressLocation.Notification,
-      title: 'Explaining code',
-      cancellable: true,
-    }, () => {
-      return new Promise(async (resolve, reject)=> {
-        const editor = vscode.window.activeTextEditor;
-        if (editor?.selection) {
-          const highlight = getSelectedText(editor);
-          const insertPosition = getInsertPosition(editor);
-          try {
-            const { refreshToken, accessToken } = getTokens();
-            const explainResponse = await axios.post(`${BACKEND_ENDPOINT}/function/v1/explain`, {
-              code: highlight,
-              accessToken,
-              refreshToken,
-              source: 'vscode'
-            });
-            const { output, newTokens } = explainResponse.data;
-            potentiallyReplaceTokens(newTokens);
-            // Add language here
-            const commentedExplain = addComments(output, editor.document.fileName);
-            const snippet = new vscode.SnippetString(`${commentedExplain}\n`);
-            editor.insertSnippet(snippet, insertPosition);
-            resolve('Added explination');
-
-          } catch (err: any) {
-            vscode.window.showErrorMessage(err.response.data.error);
-            reject(err.response.data.error);
-          }
-        } else {
-          reject('No text selected');
-        }
-      });
-    });
-  });
-
   const askFunction = vscode.commands.registerCommand('fig.ask', async () => {
     const question = await vscode.window.showInputBox(
       { title: 'What would you like to ask about the selected code?', placeHolder: 'Enter you question here' }
@@ -158,6 +120,7 @@ export function activate(context: vscode.ExtensionContext) {
             const { refreshToken, accessToken } = getTokens();
             const askResponse = await axios.post(`${BACKEND_ENDPOINT}/function/v1/ask`, {
               code: highlight,
+              inputLanguage: editor.document.languageId,
               question,
               accessToken,
               refreshToken,
@@ -171,6 +134,46 @@ export function activate(context: vscode.ExtensionContext) {
             vscode.window.showErrorMessage(err.response.data.error);
             reject(err.response.data.error);
           }
+        }
+      });
+    });
+  });
+
+  const explainFunction = vscode.commands.registerCommand('fig.explain', async () => {
+    vscode.window.withProgress({
+      location: vscode.ProgressLocation.Notification,
+      title: 'Explaining code',
+      cancellable: true,
+    }, () => {
+      return new Promise(async (resolve, reject)=> {
+        const editor = vscode.window.activeTextEditor;
+        if (editor?.selection) {
+          const highlight = getSelectedText(editor);
+          const insertPosition = getInsertPosition(editor);
+          try {
+            const { refreshToken, accessToken } = getTokens();
+            const explainResponse = await axios.post(`${BACKEND_ENDPOINT}/function/v1/explain`, {
+              code: highlight,
+              inputLanguage: editor.document.languageId,
+              outputLanguage: 'English',
+              accessToken,
+              refreshToken,
+              source: 'vscode'
+            });
+            const { output, newTokens } = explainResponse.data;
+            potentiallyReplaceTokens(newTokens);
+            // Add language here
+            const commentedExplain = addComments(output, editor.document.fileName);
+            const snippet = new vscode.SnippetString(`${commentedExplain}\n`);
+            editor.insertSnippet(snippet, insertPosition);
+            resolve('Added explination');
+
+          } catch (err: any) {
+            vscode.window.showErrorMessage(err.response.data.error);
+            reject(err.response.data.error);
+          }
+        } else {
+          reject('No text selected');
         }
       });
     });
@@ -197,6 +200,7 @@ export function activate(context: vscode.ExtensionContext) {
             const { refreshToken, accessToken } = getTokens();
             const askResponse = await axios.post(`${BACKEND_ENDPOINT}/function/v1/ask`, {
               code: fileText,
+              inputLanguage: editor?.document.languageId,
               question,
               accessToken,
               refreshToken,
@@ -231,6 +235,7 @@ export function activate(context: vscode.ExtensionContext) {
             const { refreshToken, accessToken } = getTokens();
             const docstringResponse = await axios.post(`${BACKEND_ENDPOINT}/function/v2/docstring`, {
               code: highlight,
+              inputLanguage: editor.document.languageId,
               accessToken,
               refreshToken,
               source: 'vscode'
@@ -269,6 +274,7 @@ export function activate(context: vscode.ExtensionContext) {
             const { refreshToken, accessToken } = getTokens();
             const complexityResponse = await axios.post(`${BACKEND_ENDPOINT}/function/v1/complexity`, {
               code: highlight,
+              inputLanguage: editor.document.languageId,
               language: languageId,
               accessToken,
               refreshToken,
