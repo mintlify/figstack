@@ -2,7 +2,13 @@
 
 ![Version](https://img.shields.io/visual-studio-marketplace/v/figstack.vsc) ![Size](https://img.shields.io/github/languages/code-size/figstack/vscode) ![Ratings](https://img.shields.io/visual-studio-marketplace/r/figstack.vsc)
 
-[Figstack](https://figstack.com) helps you read, write, and understand code. Currently, Figstack can explain code, generate documentation, and calculate the time complexity of functions.
+[Figstack](https://figstack.com) helps you read, write, and understand code. Currently, Figstack can answer questions, explain code, generate documentation, and calculate the time complexity of functions.
+
+## Ask Questions
+
+Use the `Ask Question` function to get answers about your code as if you are asking a programming instructor.
+
+![Ask Question](/images/ask.jpg)
 
 ## Explain Code
 

@@ -7,19 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- ## [1.1.0] - 2021-09-11
+## [1.2.0] - 2021-09-16
 
-- ### Added
+### Added
+
+- Support for VS Code Internals
+- `Ask Question` README.md documentation
+
+## [1.1.0] - 2021-09-11
+
+### Added
 
 - `Ask Question` function for both selected text and entire files
 
-- ## [1.0.2] - 2021-09-11
+## [1.0.2] - 2021-09-11
 
-- ### Changed
+### Changed
 
 - Docstring function V2 with dramatically improved and more reliable results
 
-- ## [0.1.2] - 2021-09-04
+## [0.1.2] - 2021-09-04
 
 ### Added
 
@@ -27,19 +34,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Creating new user on authentication
 - Ability to properly log out to another account
 
-- ## [0.1.1] - 2021-09-04
+## [0.1.1] - 2021-09-04
 
 ### Added
 
 - Support for comments in 26 programming languages
 
-- ## [0.1] - 2021-09-04
+## [0.1] - 2021-09-04
 
 ### Changed
 
 - Use production environment for extension
 
-- ## [0.02] - 2021-09-04
+## [0.02] - 2021-09-04
 
 ### Changed
 
@@ -58,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Time Complexity` function.
 
 [Unreleased]: https://github.com/figstack/vscode
+[1.2.0]: https://github.com/figstack/vscode
 [1.1.0]: https://github.com/figstack/vscode
 [1.0.2]: https://github.com/figstack/vscode
 [0.1.2]: https://github.com/figstack/vscode
