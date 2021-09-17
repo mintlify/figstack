@@ -2,7 +2,7 @@
 import * as vscode from 'vscode';
 import axios from 'axios';
 import { URLSearchParams } from 'url';
-import { BACKEND_ENDPOINT, loginURL, logoutURL } from './constants';
+import { BACKEND_ENDPOINT, getLoginURL, getLogoutURL } from './constants';
 import { addComments } from './utility/comments';
 
 type NewTokens = {
@@ -91,11 +91,11 @@ export function activate(context: vscode.ExtensionContext) {
   };
 
   const login = vscode.commands.registerCommand('fig.login', async () => {
-    vscode.env.openExternal(vscode.Uri.parse(loginURL));
+    vscode.env.openExternal(vscode.Uri.parse(getLoginURL(vscode.env.uriScheme)));
   });
 
   const logout = vscode.commands.registerCommand('fig.logout', async () => {
-    vscode.env.openExternal(vscode.Uri.parse(logoutURL));
+    vscode.env.openExternal(vscode.Uri.parse(getLogoutURL(vscode.env.uriScheme)));
   });
 
   const askFunction = vscode.commands.registerCommand('fig.ask', async () => {
