@@ -30,7 +30,7 @@ Measure the efficiency of your code in Big O notation using `Time Complexity` an
 
 ## Authentication
 
-In order to use the extension, you must sign in with a [Figstack account](https://figstack.com). You can sign in by clicking on the Figstack icon in sidebar.
+In order to use the extension, you must sign in with a [Figstack account](https://figstack.com). You can sign in by clicking on the Figstack icon in the sidebar.
 
 -----------------------------------------------------------------------------------------------------------
 
