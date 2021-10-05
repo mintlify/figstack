@@ -131,9 +131,9 @@ export function activate(context: vscode.ExtensionContext) {
             vscode.window.showInformationMessage(output);
             resolve(output);
           } catch (err: any) {
-            var errorMessage = "Error - Alternatively use the Figstack web app (figstack.com)."
+            let errorMessage = 'Error - Alternatively use the Figstack web app (figstack.com).';
             if (err.response.data.error) {
-              errorMessage = err.response.data.error
+              errorMessage = err.response.data.error;
             }
             vscode.window.showErrorMessage(errorMessage);
             resolve(errorMessage);
@@ -173,9 +173,9 @@ export function activate(context: vscode.ExtensionContext) {
             resolve('Added explination');
 
           } catch (err: any) {
-            var errorMessage = "Error - Alternatively use the Figstack web app (figstack.com)."
+            let errorMessage = 'Error - Alternatively use the Figstack web app (figstack.com).';
             if (err.response.data.error) {
-              errorMessage = err.response.data.error
+              errorMessage = err.response.data.error;
             }
             vscode.window.showErrorMessage(errorMessage);
             resolve(errorMessage);
@@ -219,9 +219,9 @@ export function activate(context: vscode.ExtensionContext) {
             vscode.window.showInformationMessage(output);
             resolve(output);
           } catch (err: any) {
-            var errorMessage = "Error - Alternatively use the Figstack web app (figstack.com)."
+            let errorMessage = 'Error - Alternatively use the Figstack web app (figstack.com).';
             if (err.response.data.error) {
-              errorMessage = err.response.data.error
+              errorMessage = err.response.data.error;
             }
             vscode.window.showErrorMessage(errorMessage);
             resolve(errorMessage);
@@ -259,9 +259,9 @@ export function activate(context: vscode.ExtensionContext) {
             editor.insertSnippet(snippet, insertPosition);
             resolve('Complete docstring generation');
           } catch (err: any) {
-            var errorMessage = "Error - Alternatively use the Figstack web app (figstack.com)."
+            let errorMessage = 'Error - Alternatively use the Figstack web app (figstack.com).';
             if (err.response.data.error) {
-              errorMessage = err.response.data.error
+              errorMessage = err.response.data.error;
             }
             vscode.window.showErrorMessage(errorMessage);
             resolve(errorMessage);
@@ -303,9 +303,9 @@ export function activate(context: vscode.ExtensionContext) {
             editor.insertSnippet(snippet, insertPosition);
             resolve('Calculated time complexity');
           } catch (err: any) {
-            var errorMessage = "Error - Alternatively use the Figstack web app (figstack.com)."
+            let errorMessage = 'Error - Alternatively use the Figstack web app (figstack.com).';
             if (err.response.data.error) {
-              errorMessage = err.response.data.error
+              errorMessage = err.response.data.error;
             }
             vscode.window.showErrorMessage(errorMessage);
             resolve(errorMessage);
