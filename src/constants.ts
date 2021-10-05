@@ -8,7 +8,7 @@ export const BACKEND_ENDPOINT = IS_DEV ? 'http://localhost:5000' : 'https://api.
 // URL config for authentication
 const auth0Domain = IS_DEV ? 'https://dev-uxa1yxhj.us.auth0.com' : 'https://figstack.us.auth0.com';
 const responseType = 'code';
-const clientId = IS_DEV ? 'nv8BC1pmSBIw2HMNRqsd8Bkl5xwc1ipN' : 'zyVI6tCd7UQ44NCkqlx3TsulhrLtMYzm'
+const clientId = IS_DEV ? 'nv8BC1pmSBIw2HMNRqsd8Bkl5xwc1ipN' : 'zyVI6tCd7UQ44NCkqlx3TsulhrLtMYzm';
 const scope = 'openid profile email offline_access';
 // Scheme is used to distinguish between VS Code and VS Code Internals
 export const getLoginURL = (uriScheme: string) => {

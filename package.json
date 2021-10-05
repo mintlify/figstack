@@ -3,7 +3,7 @@
 	"displayName": "Figstack",
 	"description": "Your intelligent coding companion",
 	"icon": "images/logo.png",
-	"version": "1.2.0",
+	"version": "1.2.2",
 	"publisher": "figstack",
 	"repository": {
 		"url": "https://github.com/figstack/vscode"
@@ -159,7 +159,8 @@
 		"watch": "tsc -watch -p ./",
 		"pretest": "npm run compile && npm run lint",
 		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js"
+		"test": "node ./out/test/runTest.js",
+		"publish": "vsce publish"
 	},
 	"devDependencies": {
 		"@types/auth0": "^2.33.4",
