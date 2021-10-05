@@ -53,11 +53,11 @@ export function activate(context: vscode.ExtensionContext) {
   };
 
   const potentiallyReplaceTokens = (newTokens: NewTokens | null | undefined) => {
-    if (newTokens?.accessToken) {
+    if (newTokens?.refreshToken) {
       storageManager.setValue('refreshToken', newTokens.refreshToken);
     }
 
-    if (newTokens?.refreshToken) {
+    if (newTokens?.accessToken) {
       storageManager.setValue('accessToken', newTokens.accessToken);
     }
   };
