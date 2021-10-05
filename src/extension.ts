@@ -132,7 +132,7 @@ export function activate(context: vscode.ExtensionContext) {
             resolve(output);
           } catch (err: any) {
             let errorMessage = 'Error - Alternatively use the Figstack web app (figstack.com).';
-            if (err.response.data.error) {
+            if (err?.response?.data?.error) {
               errorMessage = err.response.data.error;
             }
             vscode.window.showErrorMessage(errorMessage);
@@ -174,7 +174,7 @@ export function activate(context: vscode.ExtensionContext) {
 
           } catch (err: any) {
             let errorMessage = 'Error - Alternatively use the Figstack web app (figstack.com).';
-            if (err.response.data.error) {
+            if (err?.response?.data?.error) {
               errorMessage = err.response.data.error;
             }
             vscode.window.showErrorMessage(errorMessage);
@@ -220,7 +220,7 @@ export function activate(context: vscode.ExtensionContext) {
             resolve(output);
           } catch (err: any) {
             let errorMessage = 'Error - Alternatively use the Figstack web app (figstack.com).';
-            if (err.response.data.error) {
+            if (err?.response?.data?.error) {
               errorMessage = err.response.data.error;
             }
             vscode.window.showErrorMessage(errorMessage);
@@ -260,7 +260,7 @@ export function activate(context: vscode.ExtensionContext) {
             resolve('Complete docstring generation');
           } catch (err: any) {
             let errorMessage = 'Error - Alternatively use the Figstack web app (figstack.com).';
-            if (err.response.data.error) {
+            if (err?.response?.data?.error) {
               errorMessage = err.response.data.error;
             }
             vscode.window.showErrorMessage(errorMessage);
@@ -304,7 +304,7 @@ export function activate(context: vscode.ExtensionContext) {
             resolve('Calculated time complexity');
           } catch (err: any) {
             let errorMessage = 'Error - Alternatively use the Figstack web app (figstack.com).';
-            if (err.response.data.error) {
+            if (err?.response?.data?.error) {
               errorMessage = err.response.data.error;
             }
             vscode.window.showErrorMessage(errorMessage);
