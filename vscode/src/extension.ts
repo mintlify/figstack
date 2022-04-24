@@ -10,16 +10,22 @@ type NewTokens = {
 	refreshToken: string | null;
 };
 
-// Global local storage
-class LocalStorageService {
-  constructor(private storage: vscode.Memento) {}
+// Global secret storage
+class LocalSecretStorageService {
+  constructor(private storage: vscode.SecretStorage) {}
 	
-  public getValue(key: string) {
-    return this.storage.get(key, null);
+  public async getValue(key: string) {
+    return await this.storage.get(key);
   }
 
-  public setValue(key: string, value: string | null) {
-    this.storage.update(key, value);
+  public setValue(key: string, value: string) {
+    this.storage.store(key, value);
+  }
+
+  // In a Memento object, storing null removes the underlying value.
+  // SecretStore does not support this, so we directly delete it instead.
+  public delValue(key: string) {
+    this.storage.delete(key);
   }
 }
 
@@ -27,7 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
 	
   // Initializations
   const figChannel = vscode.window.createOutputChannel('Figstack');
-  const storageManager = new LocalStorageService(context.globalState);
+  const storageManager = new LocalSecretStorageService(context.secrets);
 
   // Only use during development
   // Reference with figlog(log);
@@ -72,20 +78,20 @@ export function activate(context: vscode.ExtensionContext) {
           refreshToken: query.get('refreshToken')
         };
 
-        // Store tokesn into store manager
+        // Store tokens into secret store manager
         potentiallyReplaceTokens(newTokens);
         vscode.commands.executeCommand('setContext', 'fig.isAuthenticated', true);
       } else if (uri.path === '/logout') {
-        storageManager.setValue('accessToken', null);
-        storageManager.setValue('refreshToken', null);
+        storageManager.delValue('accessToken');
+        storageManager.delValue('refreshToken');
         vscode.commands.executeCommand('setContext', 'fig.isAuthenticated', false);
       }
     }
   });
 
-  const getTokens = () => {
-    const refreshToken = storageManager.getValue('refreshToken');
-    const accessToken = storageManager.getValue('accessToken');
+  const getTokens = async () => {
+    const refreshToken = await storageManager.getValue('refreshToken');
+    const accessToken = await storageManager.getValue('accessToken');
 
     return { refreshToken, accessToken };
   };
@@ -117,7 +123,7 @@ export function activate(context: vscode.ExtensionContext) {
           const highlight = getSelectedText(editor);
 
           try {
-            const { refreshToken, accessToken } = getTokens();
+            const { refreshToken, accessToken } = await getTokens();
             const askResponse = await axios.post(`${BACKEND_ENDPOINT}/function/v1/ask`, {
               code: highlight,
               inputLanguage: editor.document.languageId,
@@ -155,7 +161,7 @@ export function activate(context: vscode.ExtensionContext) {
           const highlight = getSelectedText(editor);
           const insertPosition = getInsertPosition(editor);
           try {
-            const { refreshToken, accessToken } = getTokens();
+            const { refreshToken, accessToken } = await getTokens();
             const explainResponse = await axios.post(`${BACKEND_ENDPOINT}/function/v1/explain`, {
               code: highlight,
               inputLanguage: editor.document.languageId,
@@ -205,7 +211,7 @@ export function activate(context: vscode.ExtensionContext) {
         const fileText = editor?.document.getText();
         if (fileText) {
           try {
-            const { refreshToken, accessToken } = getTokens();
+            const { refreshToken, accessToken } = await getTokens();
             const askResponse = await axios.post(`${BACKEND_ENDPOINT}/function/v1/ask`, {
               code: fileText,
               inputLanguage: editor?.document.languageId,
@@ -244,7 +250,7 @@ export function activate(context: vscode.ExtensionContext) {
           const insertPosition = getInsertPosition(editor);
 
           try {
-            const { refreshToken, accessToken } = getTokens();
+            const { refreshToken, accessToken } = await getTokens();
             const docstringResponse = await axios.post(`${BACKEND_ENDPOINT}/function/v2/docstring`, {
               code: highlight,
               inputLanguage: editor.document.languageId,
@@ -287,7 +293,7 @@ export function activate(context: vscode.ExtensionContext) {
           const insertPosition = getInsertPosition(editor);
 
           try {
-            const { refreshToken, accessToken } = getTokens();
+            const { refreshToken, accessToken } = await getTokens();
             const complexityResponse = await axios.post(`${BACKEND_ENDPOINT}/function/v1/complexity`, {
               code: highlight,
               inputLanguage: editor.document.languageId,
