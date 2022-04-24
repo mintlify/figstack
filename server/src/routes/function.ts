@@ -11,8 +11,8 @@ import { COMPLEXITY } from '../prompts/complexity';
 import { OPENAI_AUTHORIZATION } from '../constants/connection';
 import Fig from '../models/Fig';
 
-const CODEX_ENDPOINT = 'https://api.openai.com/v1/engines/davinci-codex/completions';
-const CODEX_CUSHMAN_ENDPOINT = 'https://api.openai.com/v1/engines/cushman-codex/completions';
+const CODEX_ENDPOINT = 'https://api.openai.com/v1/engines/code-davinci-002/completions';
+const CODEX_CUSHMAN_ENDPOINT = 'https://api.openai.com/v1/engines/code-cushman-001/completions';
 const AVERAGE_CODEX_TOKENS_BUDGET = 680;
 const CODEX_TEMPERATURE = 0;
 

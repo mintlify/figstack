@@ -35,7 +35,7 @@ Measure the efficiency of your code in Big O notation using `Time Complexity` an
 ## Deploying Locally
 
 1. Install all dependencies using `npm install`
-2. Rename `server/.env.example` into `server/.env` and populate all missing environment variables
+2. Rename `client/.env.example` into `client/.env`, `server/.env.example` into `server/.env` and populate all missing environment variables
 3. Run `npm run dev`
 
 -----------------------------------------------------------------------------------------------------------
