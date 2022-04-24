@@ -1,0 +1,29 @@
+@import url("https://use.typekit.net/mwj7veg.css");
+
+@font-face {
+  font-family: 'alliance';
+  src: url('/fonts/alliance-no-1-regular.woff') format('woff');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'alliance';
+  src: url('/fonts/alliance-no-1-medium.woff') format('woff');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'alliance';
+  src: url('/fonts/alliance-no-1-bold.woff') format('woff');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'alliance';
+  src: url('/fonts/alliance-no-1-extrabold.woff') format('woff');
+  font-weight: 800;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

@@ -1,0 +1,51 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "src/server.ts",
+  "scripts": {
+    "start": "ts-node src/server.ts",
+    "dev": "nodemon -x ts-node src/server.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mintlify/figstack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mintlify/figstack/issues"
+  },
+  "homepage": "https://github.com/mintlify/figstack#readme",
+  "dependencies": {
+    "@types/analytics-node": "^3.1.5",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/morgan": "^1.9.3",
+    "@types/node": "^16.6.2",
+    "@types/uuid": "^8.3.1",
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/parser": "^4.31.0",
+    "analytics-node": "^5.0.0",
+    "axios": "^0.21.1",
+    "connect-datadog": "^0.0.9",
+    "cors": "^2.8.5",
+    "dd-trace": "^1.5.0",
+    "dotenv": "^10.0.0",
+    "eslint": "^7.32.0",
+    "express": "^4.17.1",
+    "mailchimp-api-v3": "^1.15.0",
+    "mongodb": "^3.6.11",
+    "mongoose": "^5.13.7",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.12",
+    "stripe": "^8.170.0",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.3.5",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/connect-datadog": "^0.0.6"
+  },
+  "description": ""
+}

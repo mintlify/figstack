@@ -1,183 +1,23 @@
 {
-	"name": "vsc",
-	"displayName": "Figstack",
-	"description": "Your intelligent coding companion",
-	"icon": "images/logo.png",
-	"version": "1.2.4",
-	"publisher": "figstack",
-	"repository": {
-		"url": "https://github.com/figstack/vscode"
-	},
-	"engines": {
-		"vscode": "^1.59.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"onView:fig-auth",
-		"onCommand:fig.login",
-		"onCommand:fig.logout",
-		"onCommand:fig.explain",
-		"onCommand:fig.ask",
-		"onCommand:fig.askFile",
-		"onCommand:fig.docstring",
-		"onCommand:fig.complexity"
-	],
-	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "fig.login",
-				"title": "Login"
-			},
-			{
-				"command": "fig.logout",
-				"title": "Logout"
-			},
-			{
-				"command": "fig.explain",
-				"title": "Explain Code"
-			},
-			{
-				"command": "fig.ask",
-				"title": "Ask Question"
-			},
-			{
-				"command": "fig.askFile",
-				"title": "Ask Question"
-			},
-			{
-				"command": "fig.docstring",
-				"title": "Write Docstring"
-			},
-			{
-				"command": "fig.complexity",
-				"title": "Get Time Complexity"
-			}
-		],
-		"keybindings": [
-			{
-				"command": "fig.explain",
-				"key": "cmd+ctrl+e",
-				"mac": "cmd+ctrl+e",
-				"win": "ctrl+alt+e",
-				"when": "editorHasSelection"
-			},
-			{
-				"command": "fig.ask",
-				"key": "cmd+ctrl+a",
-				"mac": "cmd+ctrl+a",
-				"win": "ctrl+alt+a",
-				"when": "editorHasSelection"
-			},
-			{
-				"command": "fig.askFile",
-				"key": "cmd+ctrl+a",
-				"mac": "cmd+ctrl+a",
-				"win": "ctrl+alt+a",
-				"when": "!editorHasSelection"
-			},
-			{
-				"command": "fig.docstring",
-				"key": "cmd+ctrl+d",
-				"mac": "cmd+ctrl+d",
-				"win": "ctrl+alt+d",
-				"when": "editorHasSelection"
-			},
-			{
-				"command": "fig.complexity",
-				"key": "cmd+ctrl+c",
-				"mac": "cmd+ctrl+c",
-				"win": "ctrl+alt+c",
-				"when": "editorHasSelection"
-			}
-		],
-		"viewsContainers": {
-			"activitybar": [
-				{
-					"id": "figstack",
-					"title": "Figstack",
-					"icon": "images/icon.png"
-				}
-			]
-		},
-		"viewsWelcome": [
-			{
-				"view": "fig-auth",
-				"contents": "[Sign in](command:fig.login)\nTo learn more about Figstack, go to [our website](https://figstack.com).",
-				"when": "!fig.isAuthenticated"
-			},
-			{
-				"view": "fig-auth",
-				"contents": "How to use Figstack\n1. Highlight some code\n2. Right click to open the context menu\n3. Select 'Explain Code' or any other function\nLearn more about Figstack at [our website](https://figstack.com).",
-				"when": "fig.isAuthenticated"
-			}
-		],
-		"views": {
-			"figstack": [
-				{
-					"id": "fig-auth",
-					"name": "Authentication"
-				}
-			]
-		},
-		"menus": {
-			"view/title": [
-				{
-					"when": "fig.isAuthenticated",
-					"command": "fig.logout"
-				}
-			],
-			"editor/context": [
-				{
-					"when": "editorHasSelection",
-					"command": "fig.explain"
-				},
-				{
-					"when": "editorHasSelection",
-					"command": "fig.ask"
-				},
-				{
-					"when": "!editorHasSelection",
-					"command": "fig.askFile"
-				},
-				{
-					"when": "editorHasSelection",
-					"command": "fig.docstring"
-				},
-				{
-					"when": "editorHasSelection",
-					"command": "fig.complexity"
-				}
-			]
-		}
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile && npm run lint",
-		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js",
-		"publish": "vsce publish"
-	},
-	"devDependencies": {
-		"@types/auth0": "^2.33.4",
-		"@types/glob": "^7.1.3",
-		"@types/mocha": "^8.2.2",
-		"@types/node": "14.x",
-		"@types/vscode": "^1.59.0",
-		"@typescript-eslint/eslint-plugin": "^4.26.0",
-		"@typescript-eslint/parser": "^4.26.0",
-		"eslint": "^7.27.0",
-		"glob": "^7.1.7",
-		"mocha": "^8.4.0",
-		"typescript": "^4.3.2",
-		"vscode-test": "^1.5.2"
-	},
-	"dependencies": {
-		"axios": "^0.21.4",
-		"dotenv": "^10.0.0"
-	}
+  "name": "figstack",
+  "version": "1.0.0",
+  "description": "The Figstack monorepo",
+  "scripts": {
+    "dev": "npm run dev --workspace=client & npm run dev --workspace=server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mintlify/figstack.git"
+  },
+  "author": "Mintlify",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mintlify/figstack/issues"
+  },
+  "homepage": "https://github.com/mintlify/figstack#readme",
+  "workspaces": [
+    "server",
+    "client",
+    "vscode"
+  ]
 }
