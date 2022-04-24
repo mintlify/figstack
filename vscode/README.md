@@ -8,25 +8,25 @@
 
 Use the `Ask Question` function to get answers about your code as if you are asking a programming instructor.
 
-![Ask Question](./images/ask.jpg)
+![Ask Question](/vscode/images/ask.jpg)
 
 ## Explain Code
 
 Having trouble understanding the program that you're looking at? Use `Explain Code` to explain it to you in natural language.
 
-![Explain Code](./images/explain.jpg)
+![Explain Code](/vscode//images/explain.jpg)
 
 ## Write Docstring
 
 Don't like writing documentation for your functions? Have Figstack's `Docstring Writer` craft detailed docstrings so your functions are always readable and maintable.
 
-![Write Docstring](./images/docstring.jpg)
+![Write Docstring](/vscode/images/docstring.jpg)
 
 ## Calculate Time Complexity
 
 Measure the efficiency of your code in Big O notation using `Time Complexity` and see how you can optimize your program.
 
-![Time Complexity](./images/complexity.jpg)
+![Time Complexity](/vscode/images/complexity.jpg)
 
 ## Authentication
 
