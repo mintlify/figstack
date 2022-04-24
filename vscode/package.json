@@ -6,7 +6,7 @@
 	"version": "1.2.4",
 	"publisher": "figstack",
 	"repository": {
-		"url": "https://github.com/figstack/vscode"
+		"url": "https://github.com/mintlify/figstack"
 	},
 	"engines": {
 		"vscode": "^1.59.0"
