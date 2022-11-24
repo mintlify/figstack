@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/docs/:match*",
-      "destination": "https://flipt.mintlify.app/:match*"
-    }
-  ]
-}
