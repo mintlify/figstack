@@ -293,32 +293,9 @@ export const loginOrCreateUser = async (accessToken: string, githubUsername?: st
         userId: newUserId,
         traits: userTraits
       });
-
-      const subject = given_name
-        ? `Hey ${given_name}, check out Mintlify for smart commenting`
-        : 'Check out Mintlify for smart commenting';
-
-      await axios.post('https://mandrillapp.com/api/1.0/messages/send-template', {
-        key: process.env.MAILCHIMP_TRANSACTIONAL_KEY,
-        template_name: 'signup',
-        template_content: [],
-        message: {
-          subject,
-          from_email: 'han@mintlify.com',
-          from_name: 'Han from Figstack',
-          to: [
-            {
-              email
-            }
-          ],
-          merge_language: 'handlebars',
-          global_merge_vars: []
-        }
-      });
-
       
     } catch (err) {
-      console.log('User also exists on Mailchimp and Segment');
+      console.log('User also exists on Segment');
     }
   }
 
